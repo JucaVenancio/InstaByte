@@ -10,7 +10,7 @@ let connection;
     }
 })();
 
-export default async function getAllPosts() {
+export async function getAllPosts() {
     try {
         if (!connection) {
             throw new Error("No database connection");
@@ -22,4 +22,11 @@ export default async function getAllPosts() {
         console.error("Failed to retrieve posts:", error);
         return [];
     }
+}
+
+export async function createPost(newPost) {
+    const db = connection.db("InstaByte");
+    const collection = db.collection("posts");
+    return await collection.insertOne(newPost);
+
 }
