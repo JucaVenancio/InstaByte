@@ -21,7 +21,6 @@ export async function getAllPosts() {
         return await collection.find().toArray();
     } catch (error) {
         console.error("Failed to retrieve posts:", error);
-        return [];
     }
 }
 
@@ -35,7 +34,6 @@ export async function createPost(newPost) {
         return await collection.insertOne(newPost);
     } catch (error) {
         console.error("Failed to create new post:", error);
-        return [];
     }
 
 }
@@ -55,15 +53,23 @@ async function getPostById(id) {
     }
 }
 
-export async function updatingPost(id, newData) {
+export async function updatingPost(id, newPost) {
     const db = connection.db("InstaByte");
-    const collection = getPostById(id);
+    //const collection = getPostById(id);
+    const collection = db.collection("posts");
+    const objID = ObjectId.createFromHexString(id);
+
     try {
-        if (collection == null) {
+
+        if (!collection) {
             throw new Error("Post not found!")
         }
-        return await collection.updateOne(newData);
-    } catch (error){
+
+        return await collection.updateOne({ _id: objID }, { $set: newPost });
+
+    } catch (error) {
+
         console.error("Failed the updating post:", error);
     }
+
 }
