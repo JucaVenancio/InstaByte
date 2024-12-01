@@ -1,6 +1,6 @@
 import fs from "fs";
 import descriptionGeneratorWithGemini from "../../services/geminiServices.js";
-import { getAllPosts, createPost, updatingPost } from "../models/postModel.js";
+import { getAllPosts, createPost, updatingPost, getPostById } from "../models/postModel.js";
 
 
 //Busca todos os posts
@@ -10,7 +10,20 @@ export async function listPosts(req, res) {
         res.status(200).json(posts);
     } catch (erro) {
         console.error(erro.message);
-        res.status(500).json({ "Erro": "Fail the GET posts!" })
+        res.status(500).json({ "Erro": "Fail the GET posts!" });
+    }
+
+}
+
+//Busca um post de id unico
+export async function listByIdUnique(req, res) {
+    try {
+        const id = req.params.id;
+        const posts = await getPostById(id);
+        res.status(200).json(posts);
+    } catch (erro) {
+        console.error(erro.message);
+        res.status(500).json({ "Erro": "Fail the GET posts!" });
     }
 
 }
@@ -23,7 +36,7 @@ export async function postNewPost(req, res) {
         res.status(200).json(postCreated);
     } catch (erro) {
         console.error(erro.message);
-        res.status(500).json({ "Erro": "Resquest failure!!" })
+        res.status(500).json({ "Erro": "Resquest failure!!" });
     }
 
 }

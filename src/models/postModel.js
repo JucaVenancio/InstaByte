@@ -25,6 +25,23 @@ export async function getAllPosts() {
     }
 }
 
+export async function getPostById(id) {
+
+    try {
+
+        if (!connection) {
+            throw new Error("No database connection");
+        }
+
+        const db = connection.db("InstaByte");
+        const collection = db.collection("posts");
+        return await collection.findOne({ _id: ObjectId(id) });
+
+    } catch (error) {
+        console.error("Failed the get post by id:", error);
+    }
+}
+
 export async function createPost(newPost) {
     try {
         if (!connection) {
@@ -35,22 +52,6 @@ export async function createPost(newPost) {
         return await collection.insertOne(newPost);
     } catch (error) {
         console.error("Failed to create new post:", error);
-    }
-
-}
-
-async function getPostById(id) {
-    const { ObjectId } = require('mongodb');
-
-    try {
-        if (!connection) {
-            throw new Error("No database connection");
-        }
-        const db = connection.db("InstaByte");
-        const collection = db.collection("posts");
-        return await collection.findOne({ _id: ObjectId(id) });
-    } catch (error) {
-        console.error("Failed the get post by id:", error);
     }
 }
 
