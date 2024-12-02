@@ -27,7 +27,7 @@ const routes = (app) => {
     app.use(cors(corsOptions));
 
     app.get("/posts", listPosts);
-    app.get("posts/:id", listByIdUnique);
+    app.get("/posts/:id", listByIdUnique);
     app.post("/posts", postNewPost);
     app.post("/upload", upload.single("image"), uploadImage);
     app.put("/upload/:id", updatePost);
